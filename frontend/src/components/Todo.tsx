@@ -27,24 +27,26 @@ const Todo: React.FC<TodoProps> = ({ todoObject, onEdit, onDelete }) => {
 
   return (
     <div className="todo-container">
-      {isEditing ? (
-        <div>
-          <input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} />
-          <input type="checkbox" checked={editedStatus} onChange={(e) => setEditedStatus(e.target.checked)} />
-          <button onClick={handleEdit}>Save</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
-        </div>
-      ) : (
-        <div>
-          <input type="checkbox" name="isDone" id="isDone" checked={todoObject.status} readOnly />
-          <p>{todoObject.name}</p>
-          <div className="action-buttons">
-            <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={handleDelete}>Delete</button>
-          </div>
-        </div>
-      )}
+  {isEditing ? (
+    <div>
+      <input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} />
+      <input type="checkbox" checked={editedStatus} onChange={(e) => setEditedStatus(e.target.checked)} />
+      <button onClick={handleEdit}>Save</button>
+      <button onClick={() => setIsEditing(false)}>Cancel</button>
     </div>
+  ) : (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <input type="checkbox" name="isDone" id="isDone" checked={todoObject.status} readOnly />
+      <p>{todoObject.name}</p>
+      <div className="action-buttons">
+        <button onClick={() => setIsEditing(true)}>Edit</button>
+        <button onClick={handleDelete}>Delete</button>
+      </div>
+    </div>
+  )}
+</div>
+
+
   );
 }
 

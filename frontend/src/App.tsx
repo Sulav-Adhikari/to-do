@@ -45,14 +45,18 @@ function App() {
   const handleEdit = async (id: string, updatedTask: Todo) => {
     try {
       await editTodo(id, updatedTask);
-      const updatedTasks = tasks.map(task => task.id === id ? updatedTask : task); 
-
+      const updatedTasks = tasks.map(task => {
+        if (task.id === id) {
+          return { ...task, ...updatedTask };
+        } else {
+          return task;
+        }
+      });
       setTasks(updatedTasks);
     } catch (error) {
       console.error('Error editing todo:', error);
     }
   };
-
   const handleDelete = async (id: string) => {
     try {
       await deleteTodo(id);
@@ -65,28 +69,30 @@ function App() {
   
 
   return (
-    <div className="home-container">
-      <h1>Todo React App</h1>
-      <div className="form-task">
-        <form onSubmit={handleSubmit}>
-          <input type="text" value={task} onChange={(e) => setTask(e.target.value)} />
-          <button type="submit">Add task</button>
-        </form>
+    <div className="outer-container">
+      <div className="home-container">
+        <h1>Todo React App</h1>
+        <div className="form-task">
+          <form onSubmit={handleSubmit}>
+            <input type="text" value={task} onChange={(e) => setTask(e.target.value)} />
+            <button type="submit">Add task</button>
+          </form>
+        </div>
+        <ul
+          role="list"
+          className="container"
+          aria-labelledby="list-heading"
+        >
+          {tasks.map(task => (
+            <Todo
+              key={task.id}
+              todoObject={task}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
+        </ul>
       </div>
-      <ul
-        role="list"
-        className="container"
-        aria-labelledby="list-heading"
-      >
-        {tasks.map(task => (
-          <Todo
-            key={task.id}
-            todoObject={task}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))}
-      </ul>
     </div>
   );
 }
