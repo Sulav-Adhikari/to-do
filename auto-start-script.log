@@ -1,0 +1,105 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  4.096kB
+Step 1/8 : FROM postgres:latest
+ ---> eb634efa7ee4
+Step 2/8 : WORKDIR /app
+ ---> Using cache
+ ---> 096f0adb4454
+Step 3/8 : COPY .env ./
+ ---> Using cache
+ ---> 6e66f0155b3f
+Step 4/8 : COPY init.sql /docker-entrypoint-initdb.d/
+ ---> Using cache
+ ---> 7b9c2963c085
+Step 5/8 : ENV DB_NAME=${DB_NAME}
+ ---> Using cache
+ ---> 1a56ccfb011e
+Step 6/8 : ENV DB_USER=${DB_USER}
+ ---> Using cache
+ ---> 5c0235b411de
+Step 7/8 : ENV DB_PASSWORD=${DB_PASSWORD}
+ ---> Using cache
+ ---> 9c0341d048ee
+Step 8/8 : EXPOSE 5432
+ ---> Using cache
+ ---> 4bc30545b793
+Successfully built 4bc30545b793
+Successfully tagged database_image:latest
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  110.4MB
+Step 1/13 : FROM node:latest AS builder
+ ---> 1b9d5f3b36bf
+Step 2/13 : WORKDIR /app
+ ---> Using cache
+ ---> 4c28f98fafe9
+Step 3/13 : COPY package.json yarn.lock ./
+ ---> Using cache
+ ---> 3c0573105103
+Step 4/13 : RUN npm install
+ ---> Using cache
+ ---> 141e34b8eca5
+Step 5/13 : COPY . .
+ ---> Using cache
+ ---> d396d40bd1bc
+Step 6/13 : RUN npm run build
+ ---> Using cache
+ ---> b2e7be8dec3d
+Step 7/13 : FROM node:latest
+ ---> 1b9d5f3b36bf
+Step 8/13 : WORKDIR /app
+ ---> Using cache
+ ---> 4c28f98fafe9
+Step 9/13 : COPY --from=builder /app .
+ ---> Using cache
+ ---> c24e46abf391
+Step 10/13 : COPY .env ./
+ ---> Using cache
+ ---> fbabaa77f317
+Step 11/13 : EXPOSE 3000
+ ---> Using cache
+ ---> fc6dd65cc864
+Step 12/13 : RUN npm install -g knex  # Install Knex globally if not already installed
+ ---> Using cache
+ ---> a48b3af4c384
+Step 13/13 : CMD sh -c 'npm run migrate && npm start'
+ ---> Using cache
+ ---> 611b8b5ba1bc
+Successfully built 611b8b5ba1bc
+Successfully tagged backend_imagee:latest
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  98.44MB
+Step 1/7 : FROM node:latest
+ ---> 1b9d5f3b36bf
+Step 2/7 : WORKDIR /app
+ ---> Using cache
+ ---> 4c28f98fafe9
+Step 3/7 : COPY package*.json yarn.lock ./
+ ---> Using cache
+ ---> d928cc8c0315
+Step 4/7 : RUN yarn
+ ---> Using cache
+ ---> 1029562876df
+Step 5/7 : COPY . .
+ ---> Using cache
+ ---> 7378a3e8775f
+Step 6/7 : EXPOSE 5173
+ ---> Using cache
+ ---> 89c1b879993b
+Step 7/7 : CMD ["yarn","dev", "--host", "0.0.0.0"]
+ ---> Using cache
+ ---> d5b94722859f
+Successfully built d5b94722859f
+Successfully tagged frontend_image:latest
+697ec7a810a57a81c7cccee614a2f0cf895eadffa337a94f1b28f5b62e8dbe21
+cce4ef5ccde63d377d49059ae95c992258a46954f9364003eb194d69968114fb
+95038752c1b9f2771a63999bb0ce1d496b47f1edb3b3b827158d5ac8aa74261b
+cd22707f346dcaacb6c80d9f69c35054af55a8ec16ad27d3af5dd7e79d6577fb

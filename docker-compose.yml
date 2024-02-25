@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: pdatabase_container
+    build:
+      context: ./database
+    env_file:
+      - ./database/.env
+    environment:
+      POSTGRES_PASSWORD: 123456
+    networks:
+      - network-B-D
+
+  backend:
+    container_name: backend_container
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - network-B-D
+    depends_on:
+      - database
+
+  frontend:
+    container_name: frontend_container
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - network-B-D
+
+networks:
+  network-B-D:
+    driver: bridge
