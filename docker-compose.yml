@@ -5,35 +5,43 @@ services:
     container_name: pdatabase_container
     build:
       context: ./database
-    env_file:
-      - ./database/.env
+      dockerfile: Dockerfile
     environment:
       POSTGRES_PASSWORD: 123456
     networks:
       - network-B-D
+    volumes:
+      - database:/var/lib/postgresql/data
 
   backend:
     container_name: backend_container
     build:
       context: ./backend
-    env_file:
-      - ./backend/.env
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     networks:
       - network-B-D
     depends_on:
       - database
+    volumes:
+      - ./backend:/app
 
   frontend:
     container_name: frontend_container
     build:
       context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "5173:5173"
     networks:
       - network-B-D
+    volumes:
+      - ./frontend:/app
 
 networks:
   network-B-D:
     driver: bridge
+
+volumes:
+  database: {}
