@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import Todo from "./components/Todo";
+import TodoComponent from "./components/Todo";
 import { deleteTodo, editTodo, fetchTodoList, postTodo } from "./api/todo";
 
-interface Todo {
+interface TodoItem {
   id: string;
   name: string;
   status: boolean;
 }
 
 function App() {
-  const [tasks, setTasks] = useState<Todo[]>([]);
+  const [tasks, setTasks] = useState<TodoItem[]>([]);
   const [task, setTask] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const todos: Todo[] = await fetchTodoList();
+        const todos: TodoItem[] = await fetchTodoList();
         setTasks(todos);
       } catch (error) {
         console.error('Error fetching todo list:', error);
@@ -27,7 +27,7 @@ function App() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newTask: Omit<Todo, 'id'> = {
+    const newTask = {
       name: task,
       status: false,
     };
@@ -42,7 +42,7 @@ function App() {
     }
   };
 
-  const handleEdit = async (id: string, updatedTask: Todo) => {
+  const handleEdit = async (id: string, updatedTask: { name: string; status: boolean; }) => {
     try {
       await editTodo(id, updatedTask);
       const updatedTasks = tasks.map(task => {
@@ -57,6 +57,7 @@ function App() {
       console.error('Error editing todo:', error);
     }
   };
+
   const handleDelete = async (id: string) => {
     try {
       await deleteTodo(id);
@@ -66,7 +67,7 @@ function App() {
       console.error('Error deleting todo:', error);
     }
   };
-  
+    
 
   return (
     <div className="outer-container">
@@ -84,7 +85,7 @@ function App() {
           aria-labelledby="list-heading"
         >
           {tasks.map(task => (
-            <Todo
+            <TodoComponent
               key={task.id}
               todoObject={task}
               onEdit={handleEdit}

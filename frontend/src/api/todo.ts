@@ -1,4 +1,5 @@
 import axios from 'axios';
+// import Todo from '../components/Todo';
 
 const API_URL = 'http://localhost:3000'; 
 
@@ -12,7 +13,7 @@ const fetchTodoList = async () => {
   }
 };
 
-const postTodo = async (newTodo) => {
+const postTodo = async (newTodo: { name: string; status: boolean; }) => {
   try {
     const response = await axios.post(`${API_URL}/`, newTodo);
     return response.data; 
@@ -22,7 +23,7 @@ const postTodo = async (newTodo) => {
   }
 };
 
-const deleteTodo = async (id) => {
+const deleteTodo = async (id: string) => {
   try {
     const response = await axios.delete(`${API_URL}/${id}`);
     return response.data; 
@@ -32,7 +33,7 @@ const deleteTodo = async (id) => {
   }
 };
 
-const editTodo = async (id, updatedTodo) => {
+const editTodo = async (id: string, updatedTodo: { name: string; status: boolean; }) => {
   try {
     const response = await axios.put(`${API_URL}/${id}`, updatedTodo);
     return response.data; 

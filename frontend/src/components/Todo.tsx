@@ -6,12 +6,13 @@ interface TodoProps {
     name: string;
     status: boolean;
   };
-  onEdit: (id: string, updatedTask: Todo) => void;
+  onEdit: (id: string, updatedTask: { name: string; status: boolean; }) => void;
   onDelete: (id: string) => void;
 }
 
 const Todo: React.FC<TodoProps> = ({ todoObject, onEdit, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
+  // const [editedId, setEditedId] = useState(todoObject.id)
   const [editedName, setEditedName] = useState(todoObject.name);
   const [editedStatus, setEditedStatus] = useState(todoObject.status);
 

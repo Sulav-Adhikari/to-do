@@ -17,7 +17,7 @@ docker network create network-B-D
 
 
 #Run containers
-docker run --name pdatabase_container -itd -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=123456 -p 5433:5432 --network network-B-D database_image
+docker run --name pdatabase_container -itd -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=123456 -p 5432:5432 --network network-B-D database_image
 
 docker run -itd --name backend_container  --network network-B-D -p 3000:3000 backend_imagee
 

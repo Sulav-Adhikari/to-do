@@ -1,4 +1,5 @@
-FROM node:latest AS builder
+# Build Stage
+FROM node:20.11-bookworm-slim AS builder
 
 WORKDIR /app
 
@@ -10,16 +11,21 @@ COPY . .
 
 RUN npm run build
 
-FROM node:latest
+# Production Stage
+FROM node:20.11-bookworm-slim AS production
 
 WORKDIR /app
 
-COPY --from=builder /app .
+COPY --from=builder /app/src/db ./db
 
-COPY .env ./
+COPY package.json yarn.lock ./
+
+RUN npm install
+
+COPY --from=builder /app/dist ./dist
+
+ENV NODE_ENV=prod
 
 EXPOSE 3000
-
-RUN npm install -g knex  # Install Knex globally if not already installed
 
 CMD sh -c 'npm run migrate && npm start'

@@ -2,18 +2,20 @@ version: '3.8'
 
 services:
   database:
+    image: postgres_image
     container_name: pdatabase_container
     build:
       context: ./database
       dockerfile: Dockerfile
-    environment:
-      POSTGRES_PASSWORD: 123456
+    env_file:
+      - ./database/.env
     networks:
       - network-B-D
     volumes:
       - database:/var/lib/postgresql/data
 
   backend:
+    image: backend_image
     container_name: backend_container
     build:
       context: ./backend
@@ -26,14 +28,22 @@ services:
       - database
     volumes:
       - ./backend:/app
+      
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 200s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
 
   frontend:
+    image: frontend_image
     container_name: frontend_container
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "5173:5173"
+      - "5173:80"
     networks:
       - network-B-D
     volumes:
@@ -45,3 +55,5 @@ networks:
 
 volumes:
   database: {}
+
+  
