@@ -1,7 +1,8 @@
 import axios from 'axios';
 // import Todo from '../components/Todo';
 
-const API_URL = 'http://localhost:3000'; 
+// const API_URL = 'http://localhost:3000'; 
+const API_URL = 'http://192.168.122.193:30003';
 
 const fetchTodoList = async () => {
   try {
