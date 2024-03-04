@@ -3,7 +3,7 @@ version: '3.8'
 services:
   database:
     image: postgres_image
-    container_name: pdatabase_container
+    container_name: databasec
     build:
       context: ./database
       dockerfile: Dockerfile
@@ -13,21 +13,26 @@ services:
       - network-B-D
     volumes:
       - database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   backend:
     image: backend_image
-    container_name: backend_container
+    container_name: backendc
     build:
       context: ./backend
       dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
     ports:
       - "3000:3000"
     networks:
       - network-B-D
     depends_on:
       - database
-    volumes:
-      - ./backend:/app
+    
+
+
       
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
@@ -38,7 +43,7 @@ services:
 
   frontend:
     image: frontend_image
-    container_name: frontend_container
+    container_name: frontendcd
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -46,8 +51,7 @@ services:
       - "5173:80"
     networks:
       - network-B-D
-    volumes:
-      - ./frontend:/app
+
 
 networks:
   network-B-D:

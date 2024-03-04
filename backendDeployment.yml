@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      serviceAccountName: sulav
+      containers:
+        - name: backend-container
+          image: sulavadk7/backend_image
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresdb-config
+                  key: database_url
+            - name: DB_CLIENT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresdb-config
+                  key: database_client
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresdb-config
+                  key: database_name
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresdb-config
+                  key: database_port
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresdb-config
+                  key: database_user
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresdb-config
+                  key: database_password
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresdb-config
+                  key: NODE_ENV
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backenddb-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000

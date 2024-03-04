@@ -1,9 +1,8 @@
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import type { Knex } from "knex";
-
-dotenv.config({
-  path: `${__dirname}/../../.env`,
-});
+// dotenv.config({
+//   path: `${__dirname}/../../.env`,
+// });
 
 const config: { [key: string]: Knex.Config } = {
   local: {

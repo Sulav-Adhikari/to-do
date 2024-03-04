@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  database:
+    image: sulavadk7/database:latest
+    env_file:
+      - ./.env_database
+    ports:
+      - "5432:5432"
+    deploy:
+      replicas: 2
+
+  backend:
+    image: sulavadk7/backend:latest
+    env_file:
+      - ./.env_backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    deploy:
+      replicas: 2
+
+  frontend:
+    image: sulavadk7/frontend_image
+    ports:
+      - "5173:80"
+    deploy:
+      replicas: 2

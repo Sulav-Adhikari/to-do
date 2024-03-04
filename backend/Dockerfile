@@ -16,7 +16,7 @@ FROM node:20.11-bookworm-slim AS production
 
 WORKDIR /app
 
-COPY --from=builder /app/src/db ./db
+COPY  src/db ./src/db
 
 COPY package.json yarn.lock ./
 

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresdb-config
+data:
+  database_url: postgresdb-service
+  database_client: postgres
+  database_name: to_do
+  database_port: "5432"
+  database_user: postgres
+  database_password: "root"
+  NODE_ENV: prod
