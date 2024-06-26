@@ -1,0 +1,29 @@
+name: Build docker image
+on: 
+  push:
+    branches:
+      - main
+
+env: 
+  CONTEXT_PATH: .
+  DOCKER_PATH: ./backend/Dockerfile
+  IMAGE_NAME: todo_backend
+  ENVIRONMENT: dev
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build docker image
+        run: |
+          docker build -t ${{env.IMAGE_NAME}}:${{env.ENVIRONMENT}} .
+
+      - name: Deploy in ec2 
+        run: |
+          /home/ubuntu/template/todo_dev/deploy.sh
+
+

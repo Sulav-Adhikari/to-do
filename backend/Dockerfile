@@ -24,7 +24,7 @@ RUN npm install
 
 COPY --from=builder /app/dist ./dist
 
-ENV NODE_ENV=prod
+ENV NODE_ENV=local
 
 EXPOSE 3000
 
