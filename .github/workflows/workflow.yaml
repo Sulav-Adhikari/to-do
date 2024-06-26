@@ -20,7 +20,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build -t ${{env.IMAGE_NAME}}:${{env.ENVIRONMENT}} .
+          docker build -t ${{env.IMAGE_NAME}}:${{env.ENVIRONMENT}} ./backend/Dockerfile
 
       - name: Deploy in ec2 
         run: |
